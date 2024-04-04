@@ -1,27 +1,56 @@
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup as bs, Comment
 import requests
 import certifi
 
+
 def fetch_lyrics(cleaned_title):
     lyrics = ""
-    url = f"https://www.lyricsmania.com/{cleaned_title}.html"
-    
+    url = f"https://www.azlyrics.com/lyrics/{cleaned_title}.html"
+
     response = requests.get(url, verify=certifi.where())
-    soup = bs(response.text, 'html.parser')
-    
-    video_div = soup.find('div', id='video-musictory')
-    if video_div:
-        video_div.extract()
+    soup = bs(response.text, "html.parser")
 
-    lyrics_container = soup.find('div', class_='lyrics-body')
+    classes_to_remove = [
+        "div-share noprint",
+        "div-share",
+        "lyricsh",
+        "ringtone",
+        "noprint",
+        "smt noprint",
+        "smt",
+        "abovebreadcrumb noprint",
+        "panel songlist-panel noprint",
+        "feat",
+    ]
+    for class_to_remove in classes_to_remove:
+        for div in soup.find_all("div", class_=class_to_remove):
+            div.extract()
+    for span in soup.find_all("span", class_="feat"):
+        span.decompose()
 
-    if lyrics_container:
-        for content in lyrics_container.descendants:
-            if content.name == 'br':
-                lyrics += '\n'
-            elif content.string and not content.find_parents("div", id="video-musictory"):
+    for b in soup.find_all("b"):
+        b.extract()
+
+    for ol in soup.find_all("ol"):
+        ol.extract()
+
+    for form in soup.find_all("form"):
+        form.extract()
+
+    for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
+        comment.extract()
+
+    divs = soup.find_all("div", class_="col-xs-12 col-lg-8 text-center")
+    for div in divs:
+        for content in div.descendants:
+            if content.name == "br":
+                lyrics += "\n"
+            elif content.string and not content.find_parents(
+                "div", id="video-musictory"
+            ):
                 lyrics += content.string.strip()
-    nice_lyrics = lyrics
-    print('\n' + nice_lyrics)
+        break
+    nice_lyrics = lyrics.strip()
+    print(nice_lyrics)
 
     return nice_lyrics

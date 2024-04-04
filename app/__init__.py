@@ -12,7 +12,6 @@ def hello():
 def search_lyrics():
     data = request.json
     raw_title = data.get('raw_title')
-
     cleaned_title = clean_title(raw_title)
     lyrics = fetch_lyrics(cleaned_title)
     return jsonify({'cleaned_title': cleaned_title, 'lyrics': lyrics})

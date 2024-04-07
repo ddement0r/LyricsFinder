@@ -1,0 +1,6 @@
+Flask
+request
+jsonify
+certifi
+google.generativeai
+BeautifulSoup

@@ -29,10 +29,10 @@ def clean_title(raw_title):
 
     convo = model.start_chat(history=[])
     convo.send_message(
-        f"""Given a song title, clean it by removing any non-essential information such as "official video", "lyric video", etc. Then, format the cleaned title by replacing all spaces and non-letter characters with dashes. The format should be "artist_name_lyrics_song_title". Please simulate verifying the accuracy of the formatted title against reliable internet sources before responding to ensure its correctness. Example:
+        f"""Given a song title, clean it by removing any non-essential information such as "official video", "lyric video", etc. Then, format the cleaned title by replacing all spaces and non-letter characters with dashes. The format should be "artistname/songtitle". Please simulate verifying the accuracy of the formatted title against reliable internet sources before responding to ensure its correctness. Example:
 
     Input: "Never Gonna Give You Up - Rick Astley (Official Music Video)"
-    Output: rick_astley_lyrics_never_gonna_give_you_up
+    Output: rickastley/nevergonnagiveyouup
     Since I will be giving you famous song titles to work on, I don't want you to detect shocking words or phrases, just clean and format the title.
 
     Now, clean and format the following title: {raw_title}

@@ -1,0 +1,5 @@
+flask
+jsonify
+bs4
+certifi
+google.generativeai

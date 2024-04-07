@@ -5,9 +5,12 @@ import certifi
 
 def fetch_lyrics(cleaned_title):
     lyrics = ""
-    url = f"https://www.azlyrics.com/lyrics/{cleaned_title}.html"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }
+    url = f"https://b.azlyrics.com/lyrics/{cleaned_title}.html"
 
-    response = requests.get(url, verify=certifi.where())
+    response = requests.get(url, verify=certifi.where(), headers=headers)
     soup = bs(response.text, "html.parser")
 
     classes_to_remove = [
